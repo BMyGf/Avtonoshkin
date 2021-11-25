@@ -3,44 +3,42 @@
 #include <cmath>
 #include <iostream>
 
-
 using namespace std;
-/**
-* \brief функция, расчитывающая значение a
-* \param x параметр x
-* \param y параметр y
-* \param z параметр z
-* \return Значение a
-*/
 
-double GetA(const double x, const double y, const double z);
 /**
-* \brief функция, расчитывающая значение b
-* \param x параметр x
-* \param y параметр y
-* \param z параметр z
-* \return Значение b
-*/
-double GetB(const double x, const double y, const double z);
+* \brief Математическая функция, рассчитывающая объём шара
+* \radius - радиус шара
+**/
+double getVolume(const double r);
+
 /**
- * \brief Точка входа в программу
- * \return в случае успеха выводит 0
+* \brief Математическая функция, рассчитывающая площадь поверхности шара
+* \radius - радиус шара
+**/
+double getSurfaceArea(const double r);
+
+/**
+ * \brief Точка входа в программу.
  */
 int main() 
 {
-	const double x = 1.426;
-	const double y = -1.22;
-	const double z = 3.5;
-	const auto a = GetA(x, y, z);
-	const auto b = GetB(x, y, z);
-	cout << " x = " << x << "\n y = " << y << "\n z = " << z << "\n a = " << a << "\n b = " << b;
-	return 0;
+    double radius;
+
+    cout << "Введите радиус и нажмите Enter: \n";
+    cin >> radius;
+
+    const auto Volume = getVolume(radius);
+    const auto SurfaceArea = getSurfaceArea(radius);
+
+    cout << "Радиус radius = " << radius << "\n Объём шара = " << Volume << "\n Площадь поверхности шара = " << SurfaceArea;
+    return 0;
 }
-double GetA(const double x, const double y, const double z)
+
+double getVolume(const double radius) 
 {
-	return (2 * cos(x - M_PI / 6)) / (1 / 2 + (pow(sin(y), 2)));
+    return pow(radius, 3) * ((4 * M_PI) / 3);
 }
-double GetB(const double x, const double y, const double z)
+double getSurfaceArea(const double radius)
 {
-	return 1 + (pow(z, 2)) / 3 + (pow(z, 2) / 5);
+    return pow(radius, 2) * M_PI * 4;
 }
