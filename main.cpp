@@ -1,46 +1,31 @@
-#define _USE_MATH_DEFINES
-
 #include <cmath>
 #include <iostream>
 
-
 using namespace std;
-/**
-* \brief функция, расчитывающая значение a
-* \param x параметр x
-* \param y параметр y
-* \param z параметр z
-* \return Значение a
-*/
 
-double GetA(const double x, const double y, const double z);
 /**
-* \brief функция, расчитывающая значение b
-* \param x параметр x
-* \param y параметр y
-* \param z параметр z
-* \return Значение b
+* \brief Математическая функция, рассчитывающая значение функции y
+* \param const double x - константа, имеющая тип данных с плавающей точкой двойной точности
+* \return Возвращает значение функции y
+**/
+
+double gety(const double x);
+
+/**
+* \brief Точка входа в программу.
+* \return Возвращает 0 в случае успешного выполнения.
 */
-double GetB(const double x, const double y, const double z);
-/**
- * \brief Точка входа в программу
- * \return в случае успеха выводит 0
- */
-int main() 
+int main()
 {
-	const double x = 1.426;
-	const double y = -1.22;
-	const double z = 3.5;
-	const auto a = GetA(x, y, z);
-	const auto b = GetB(x, y, z);
-	cout << " x = " << x << "\n y = " << y << "\n z = " << z << "\n a = " << a << "\n b = " << b;
-	return 0;
+    const double x = 2;
+    const auto y = gety(x);
 }
-double GetA(const double x, const double y, const double z)
+
+double gety(const double x)
 {
-	return (2 * cos(x - M_PI / 6)) / (1 / 2 + (pow(sin(y), 2)));
-}
-double GetB(const double x, const double y, const double z)
-{
-	return 1 + (pow(z, 2)) / 3 + (pow(z, 2) / 5);
+    for (double x = 2; x <= 3; x = x + 0.1)
+    {
+        cout << "y = " << sin(3) * sqrt(x) + 0.39 * x - 3.8 << endl;
+    }
+    return 1;
 }
