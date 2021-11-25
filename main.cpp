@@ -3,44 +3,46 @@
 #include <cmath>
 #include <iostream>
 
-
 using namespace std;
-/**
-* \brief функция, расчитывающая значение a
-* \param x параметр x
-* \param y параметр y
-* \param z параметр z
-* \return Значение a
-*/
 
-double GetA(const double x, const double y, const double z);
 /**
-* \brief функция, расчитывающая значение b
-* \param x параметр x
-* \param y параметр y
-* \param z параметр z
-* \return Значение b
-*/
-double GetB(const double x, const double y, const double z);
+* \brief Математическая функция, рассчитывающая площадь прямоугольника
+* \param const double a - длина прямоугольника, имеющая тип данных с плавающей точкой двойной точности
+* \param const double n - коэффициент, имеющий тип данных с плавающей точкой двойной точности
+* \return Возвращает площадь чисел
+**/
+
+double getSquare(const double a, const double n);
+
 /**
- * \brief Точка входа в программу
+* \brief Математическая функция, рассчитывающая периметр прямоугольника
+* \param длина прямоугольника, имеющая тип данных с плавающей точкой двойной точности
+* \param коэффициент, имеющий тип данных с плавающей точкой двойной точности
+* \return периметр прямоугольника
+**/
+
+double getPerimeter(const double a, const double n);
+
+/**
+ * \brief Точка входа в программу.
  * \return в случае успеха выводит 0
  */
 int main() 
 {
-	const double x = 1.426;
-	const double y = -1.22;
-	const double z = 3.5;
-	const auto a = GetA(x, y, z);
-	const auto b = GetB(x, y, z);
-	cout << " x = " << x << "\n y = " << y << "\n z = " << z << "\n a = " << a << "\n b = " << b;
-	return 0;
+    double a, n;
+    cout << "Введите длину (a) и коэффициент (n (%)) и запустите программу: \n";
+    cin >> a >> n;
+    const auto square = getSquare(a, n);
+    const auto perimeter = getPerimeter(a, n);
+    cout << "Стророна a = " << a << "\n Коэффициент n = " << n << "\n Периметр = " << square << "\n Площадь = " << perimeter;
+    return 0;
 }
-double GetA(const double x, const double y, const double z)
+
+double getSquare(const double a, const double n) 
 {
-	return (2 * cos(x - M_PI / 6)) / (1 / 2 + (pow(sin(y), 2)));
+    return pow(a, 2) * n;
 }
-double GetB(const double x, const double y, const double z)
+double getPerimeter(const double a, const double n)
 {
-	return 1 + (pow(z, 2)) / 3 + (pow(z, 2) / 5);
+    return 2 * a * (1 + n);
 }
