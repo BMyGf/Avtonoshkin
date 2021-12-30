@@ -1,8 +1,7 @@
 #define _USE_MATH_DEFINES
 
-#include <cmath>
 #include <iostream>
-
+#include <cmath>
 
 using namespace std;
 /**
@@ -13,7 +12,7 @@ using namespace std;
 * \return Значение a
 */
 
-double GetA(const double x, const double y, const double z);
+double getA(const double x, const double y, const double z);
 /**
 * \brief функция, расчитывающая значение b
 * \param x параметр x
@@ -21,26 +20,26 @@ double GetA(const double x, const double y, const double z);
 * \param z параметр z
 * \return Значение b
 */
-double GetB(const double x, const double y, const double z);
+double getB(const double x, const double y, const double z);
 /**
  * \brief Точка входа в программу
  * \return в случае успеха выводит 0
  */
-int main() 
-{
-	const double x = 1.426;
-	const double y = -1.22;
-	const double z = 3.5;
-	const auto a = GetA(x, y, z);
-	const auto b = GetB(x, y, z);
+int  main() {
+	const  double x = 1.426;
+	const  double y = -1.22;
+	const  double z = 3.5;
+	const  auto a = getA(x, y, z);
+	const  auto b = getB(x, y, z);
 	cout << " x = " << x << "\n y = " << y << "\n z = " << z << "\n a = " << a << "\n b = " << b;
+
 	return 0;
 }
-double GetA(const double x, const double y, const double z)
-{
-	return (2 * cos(x - M_PI / 6)) / (1 / 2 + (pow(sin(y), 2)));
+
+double getA(const double x, const double y, const double z) {
+	return (2 * cos(x - M_PI / 6)) / (0.5 + (pow(sin(y), 2)));
 }
-double GetB(const double x, const double y, const double z)
-{
-	return 1 + (pow(z, 2)) / 3 + (pow(z, 2) / 5);
+
+double getB(const double x, const double y, const double z) {
+	return 1 + ((pow(z, 2)) / 3 + (pow(z, 2) / 5));
 }
