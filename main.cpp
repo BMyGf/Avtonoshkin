@@ -1,31 +1,63 @@
-#include <cmath>
+#define _USE_MATH_DEFINES // for C++
+
 #include <iostream>
+#include <cmath>
+#include <iomanip>
+
 
 using namespace std;
 
-/**
-* \brief Математическая функция, рассчитывающая значение функции y
-* \param const double x - константа, имеющая тип данных с плавающей точкой двойной точности
-* \return Возвращает значение функции y
-**/
-
-double gety(const double x);
 
 /**
-* \brief Точка входа в программу.
-* \return Возвращает 0 в случае успешного выполнения.
-*/
+ * \brief Возможность расчета функции в точке.
+ * \param точка x - Входной параметр .
+ * \return true, если функция определена в заданной точке x.
+ */
+bool IsCalculated(const double x);
+
+/**
+ * \brief Расчет функции в точке x.
+ * \param точка x - Входной параметр.
+ * \return Значение функции в точке x
+ */
+double Calculation(const double x);
+
+/**
+ * \brief Точка входа в программу.
+ * \return Код ошибки (0 - успех).
+ */
 int main()
 {
-    const double x = 2;
-    const auto y = gety(x);
+    const auto leftBound = 2.0;
+    const auto rightBound = 3.0;
+    const auto step = 0.1;
+
+    auto x = leftBound;
+    cout << "  x" << setw(15) << "y\n";
+    while ((x < rightBound) || (abs(x - rightBound) < step))
+    {
+        if (IsCalculated(x))
+        {
+            const auto y = Calculation(x);
+            cout << setw(10) << setprecision(2) << x << setw(15)
+                << setprecision(5) << y << '\n';
+        }
+        else
+        {
+            cout << setw(10) << setprecision(2) << x << setw(15)
+                << "not defined \n";
+        }
+        x += step;
+    }
+    return 0;
 }
 
-double gety(const double x)
+double Calculation(const double x)
 {
-    for (double x = 2; x <= 3; x = x + 0.1)
-    {
-        cout << "y = " << sin(3) * sqrt(x) + 0.39 * x - 3.8 << endl;
-    }
-    return 1;
+    return 3 * sin(sqrt(x)) + 0.39 * x - 3.8;
+}
+
+bool IsCalculated(const double x)
+{
+    return x > 0;
 }
