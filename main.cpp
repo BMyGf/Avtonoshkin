@@ -20,11 +20,11 @@ void ArrayPrintIndex(const int* myArray, const size_t size);
 /**
  * \brief Заполнение массива случайными числами.
  * \param size размер массива.
- * \param minValue минимальное значение элементов массива.
- * \param maxValue максимальное значение элементов массива.
+ * \param minimum минимальное значение элементов массива.
+ * \param maximum максимальное значение элементов массива.
  * \return заполненный массив.
  */
-int* FillRandomArray(size_t size, int minValue, int maxValue);
+int* FillRandomArray(size_t size, int  minimum, int maximum);
 
 /**
  * \brief Вывод массива на консоль.
@@ -45,15 +45,15 @@ int Sum(const int* myArray, const size_t size);
  * \brief Замена второго элемента массива на максимальный среди отрицательных.
  * \param myArray массив.
  * \param size размер массива.
- * \return maxValue максимальное значение, которое может принимать элемент массива.
+ * \return maximum максимальное значение, которое может принимать элемент массива.
  */
-int* Replace(int* myArray, const size_t size, const int minValue);
+int* Replace(int* myArray, const size_t size, const int  minimum);
 
 /**
  * \brief Метод, возвращающий заполненный пользователем массив.
  * \param size размер массива.
- * \param minValue минимальное значение элементов массива.
- * \param maxValue максимальное значение элементов массива.
+ * \param  minimum минимальное значение элементов массива.
+ * \param maximum максимальное значение элементов массива.
  * \return заполненный массив.
  */
 int* FillUserArray(size_t size);
@@ -88,12 +88,12 @@ int main()
     const auto chosen = static_cast<ArrayInputWay>(choice);
     int* myArray = nullptr;
 
-    auto minValue = 0;
-    auto maxValue = 0;
+    auto  minimum = 0;
+    auto maximum = 0;
     cout << "Введите диапазон чисел массива (сначала минимум, потом максимум) " << endl;
-    cin >> minValue >> maxValue;
+    cin >> minimum >> maximum;
 
-    if (maxValue <= minValue)
+    if (maximum <= minimum)
     {
         cout << "Введен неправильный диапазон!" << endl;
     }
@@ -102,7 +102,7 @@ int main()
     {
     case ArrayInputWay::random:
     {
-        myArray = FillRandomArray(size, minValue, maxValue);
+        myArray = FillRandomArray(size, minimum, maximum);
         break;
     }
     case ArrayInputWay::keyboard:
@@ -114,7 +114,7 @@ int main()
 
     ArrayPrint(myArray, size);
 
-    cout << "Сумма нечетных элементов массива: "<<Sum(myArray, size)<<endl;
+    cout << "Сумма нечетных элементов массива: " << Sum(myArray, size) << endl;
 
     Sum(myArray, size);
 
@@ -122,10 +122,10 @@ int main()
     ArrayPrintIndex(myArray, size);
     cout << endl;
 
-    Replace(myArray, size, minValue);
+    Replace(myArray, size, minimum);
     ArrayPrint(myArray, size);
 
-    myArray = Replace(myArray, size, maxValue);
+    myArray = Replace(myArray, size, maximum);
     if (myArray != nullptr) {
 
         delete[] myArray;
@@ -153,7 +153,7 @@ int Sum(const int* myArray, const size_t size) {
     int sum = 0;
     for (size_t index = 0; index < size; index++) {
         if (myArray[index] % 2 == 1)
-            sum+= myArray[index]; {
+            sum += myArray[index]; {
         }
     }
     return sum;
@@ -161,7 +161,7 @@ int Sum(const int* myArray, const size_t size) {
 
 void ArrayPrintIndex(const int* myArray, const size_t size) {
     int a;
-    cout << "Введите a"<< endl;
+    cout << "Введите a" << endl;
     cin >> a;
     for (size_t index = 0; index < size; index++) {
         if ((myArray[index]) > a) {
@@ -170,13 +170,13 @@ void ArrayPrintIndex(const int* myArray, const size_t size) {
     }
 }
 
-int* Replace(int* myArray, const size_t size, const int minValue)
+int* Replace(int* myArray, const size_t size, const int  minimum)
 {
     int temprary = 0;
     if (myArray == nullptr)
         cout << "Массив пуст";
 
-    auto maxNegativeArrayValue = minValue;
+    auto maxNegativeArrayValue = minimum;
     size_t maxNegativeElementIndex = 0;
 
     for (size_t index = 0; index < size; index++) {
@@ -214,13 +214,13 @@ void ArrayPrint(const int* myArray, const size_t size)
     }
 }
 
-int* FillRandomArray(const size_t size, const int minValue, const int maxValue)
+int* FillRandomArray(const size_t size, const int  minimum, const int maximum)
 {
     random_device rd;
 
     mt19937 gen(rd());
 
-    const std::uniform_int_distribution<> uniformIntDistribution(minValue, maxValue);
+    const std::uniform_int_distribution<> uniformIntDistribution(minimum, maximum);
 
     auto* myArray = new int[size];
 
@@ -240,4 +240,4 @@ int* FillUserArray(const size_t size)
         cin >> array[index];
     }
     return array;
-} 
+}
