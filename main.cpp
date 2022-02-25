@@ -1,243 +1,204 @@
 #include <iostream>
-#include <string>
+#include <sstream>
 #include <random>
 
 using namespace std;
 
 /**
- * \brief Проверка ввода размера массива.
- * \return Размер массива.
+ * \brief Способы задания массива
  */
-size_t GetSize();
-
-/**
- * \brief Вывод элементов массива, значения которых больше заданного числа А.
- * \param myArray массив.
- * \param size размер массива.
- */
-void ArrayPrintIndex(const int* myArray, const size_t size);
-
-/**
- * \brief Заполнение массива случайными числами.
- * \param size размер массива.
- * \param minimum минимальное значение элементов массива.
- * \param maximum максимальное значение элементов массива.
- * \return заполненный массив.
- */
-int* FillRandomArray(size_t size, int  minimum, int maximum);
-
-/**
- * \brief Вывод массива на консоль.
- * \param myArray массив.
- * \param size размер массива.
- */
-void ArrayPrint(const int* myArray, const size_t size);
-
-/**
- * \brief Функция для нахождения суммы элементов, имеющих нечетное значение.
- * \param myArray массив.
- * \param size размер массива.
- * \return Сумма элементов, имеющих нечетное значение.
- */
-int Sum(const int* myArray, const size_t size);
-
-/**
- * \brief Замена второго элемента массива на максимальный среди отрицательных.
- * \param myArray массив.
- * \param size размер массива.
- * \return maximum максимальное значение, которое может принимать элемент массива.
- */
-int* Replace(int* myArray, const size_t size, const int  minimum);
-
-/**
- * \brief Метод, возвращающий заполненный пользователем массив.
- * \param size размер массива.
- * \param  minimum минимальное значение элементов массива.
- * \param maximum максимальное значение элементов массива.
- * \return заполненный массив.
- */
-int* FillUserArray(size_t size);
-
-/**
- * \brief Варианы ввода массива.
- */
-enum class ArrayInputWay
+enum class Choice
 {
-    random,
-    keyboard
+    /**
+     * \brief Ввод вручную
+     */
+    Manual,
+
+    /**
+     * \brief Ввод с помощью рандномных чисел
+     */
+     Random
 };
 
 /**
- * \brief Точка входа в программу.
- * \return 0, в случае успеха.
+ * \brief Метод заполнения массива
+ * \param size Размер массива
+ * \param selection Выбор создания массива (вручную или случайными числами)
+ * \param minimum Минимальное значение в интервале (-10)
+ * \param maximum Максимальное значение в интервале (10)
+ * \return Массив
+ */
+int* GetArray(const size_t size, const int selection, const int minnimum, const int maximum);
+
+/**
+ * \brief Получение массива
+ * \param message Мотивоционное сообщение для пользователя
+ * \return Размер массива
+ */
+size_t GetSize(const string& message);
+
+/**
+ * \brief Вывод элементов массива
+ * \param size Размер массива
+ * \return Строка со значениями индексов массива
+ */
+string ToString(const int*, const size_t size);
+
+/**
+ * \brief Функция для нахождения суммы элементов, имеющих нечетное значение
+ * \param size Размер массива
+ * \return Сумма элементов, имеющих нечетное значение
+ */
+int Sum(int*, const size_t size);
+
+/**
+ * \brief Вывод индексов элементов массива, значение которых меньше А
+ * \param size Размер массива
+ * \param a Значение А, вводимое пользователем
+ * \return Строка с индексами элементов массива, значения которых меньше А
+ */
+string ToStringIndex(const int*, const size_t size, const int a);
+
+/**
+ * \brief Функция для замены второго элемента массива на максимальный (математически) среди отрицательных
+ * \param size Размер массива
+ */
+void Replace(int*, const size_t size);
+
+/**
+ * \brief Точка входа в программу
+ * \return (Код ошибки 0) успех
  */
 int main()
 {
-    size_t size = GetSize();
-
-    if (size == 0)
-        return 1;
-
-    cout << "Как вы хотите заполнить массив?\n";
-    cout << static_cast<int>(ArrayInputWay::random) << " - random,\n";
-    cout << static_cast<int>(ArrayInputWay::keyboard) << " - keyboard.\n";
-    cout << "Ваш выбор: ";
-    int choice;
-    cin >> choice;
-
-    const auto chosen = static_cast<ArrayInputWay>(choice);
-    int* myArray = nullptr;
-
-    auto  minimum = 0;
-    auto maximum = 0;
-    cout << "Введите диапазон чисел массива (сначала минимум, потом максимум) " << endl;
-    cin >> minimum >> maximum;
-
-    if (maximum <= minimum)
+    setlocale(LC_ALL, "Russian");
+    auto error_code = 0;
+    int* my_array = nullptr;
+    const int minimum = -10;
+    const int maximum = 10;
+    try
     {
-        cout << "Введен неправильный диапазон!" << endl;
+        const auto size = GetSize("Введите размер массива: ");
+        cout << "Выберите способ создания массива: " << static_cast<int>(Choice::Manual) << " - вручную, " << static_cast<int>(Choice::Random) << " - заполнить случайными числами ";
+        int selection;
+        cin >> selection;
+        my_array = GetArray(size, selection, minimum, maximum);
+        cout << "Итоговый массив:\n";
+        cout << ToString(my_array, size);
+        cout << "\nСумма элементов, имеющих нечетное значение: " << Sum(my_array, size) << '\n';
+        int a;
+        cout << "Введите число A: ";
+        cin >> a;
+        cout << "Индексы: ";
+        cout << ToStringIndex(my_array, size, a);
+        cout << "\nМассив после замены второго элемента массива на максимальный среди отрицательных:\n";
+        Replace(my_array, size);
+        cout << ToString(my_array, size);
     }
-
-    switch (chosen)
+    catch (exception& e)
     {
-    case ArrayInputWay::random:
+        cout << e.what();
+        error_code = 1;
+    }
+
+    if (my_array != nullptr)
     {
-        myArray = FillRandomArray(size, minimum, maximum);
-        break;
+        delete[] my_array;
+        my_array = nullptr;
     }
-    case ArrayInputWay::keyboard:
-    {
-        myArray = FillUserArray(size);
-        break;
-    }
-    }
-
-    ArrayPrint(myArray, size);
-
-    cout << "Сумма нечетных элементов массива: " << Sum(myArray, size) << endl;
-
-    Sum(myArray, size);
-
-    cout << "Индексы элементов больших а" << endl;
-    ArrayPrintIndex(myArray, size);
-    cout << endl;
-
-    Replace(myArray, size, minimum);
-    ArrayPrint(myArray, size);
-
-    myArray = Replace(myArray, size, maximum);
-    if (myArray != nullptr) {
-
-        delete[] myArray;
-        myArray = nullptr;
-
-    }
-    return 0;
-
+    return error_code;
 }
 
-size_t GetSize() {
-    int size = 0;
-    cout << "Введите размер массива" << endl;
+size_t GetSize(const string& message)
+{
+    int size = -1;
+    cout << message;
     cin >> size;
+
     if (size <= 0)
     {
-        cout << "Введён неверный размер";
-        return 0;
+        throw out_of_range("Неправильный размер массива");
     }
-    else
-        return size;
-};
+    return size;
+}
 
-int Sum(const int* myArray, const size_t size) {
-    int sum = 0;
-    for (size_t index = 0; index < size; index++) {
-        if (myArray[index] % 2 == 1)
-            sum += myArray[index]; {
+int* GetArray(const size_t size, const int selection, const int min_value, const int max_value)
+{
+    const auto array = new int[size];
+    //Будет использоваться для получения начального значения для механизма случайных чисел
+    random_device rd;
+
+    //Standard mersenne_twister_engine seeded with rd()
+    mt19937 gen(rd());
+    const uniform_int_distribution<> uniformIntDistribution(min_value, max_value);
+    for (size_t index = 0; index < size; index++)
+    {
+        switch (selection)
+        {
+        case static_cast<int>(Choice::Manual):
+        {
+            cout << "Введите " << index + 1 << " элемент массива в диапозоне [-10;10]: ";
+            cin >> array[index];
+            break;
         }
+        case static_cast<int>(Choice::Random):
+        {
+            array[index] = uniformIntDistribution(gen);
+            break;
+        }
+        }
+    }
+
+    return array;
+}
+
+string ToString(const int* array, const size_t size)
+{
+    if (array == nullptr)
+        throw invalid_argument("Массив не существует");
+
+    stringstream buffer;
+    buffer << "{";
+    for (size_t index = 0; index < size - 1; index++)
+    {
+        buffer << array[index] << ", ";
+    }
+    buffer << array[size - 1] << "}";
+    return buffer.str();
+}
+
+int Sum(int* array, const size_t size) 
+{
+    int sum = 0;
+    for (size_t i = 0; i < size; i++) 
+    {
+        if (array[i] % 2)
+            sum += array[i];
     }
     return sum;
 }
 
-void ArrayPrintIndex(const int* myArray, const size_t size) {
-    int a;
-    cout << "Введите a" << endl;
-    cin >> a;
-    for (size_t index = 0; index < size; index++) {
-        if ((myArray[index]) > a) {
-            cout << index << " ";
+string ToStringIndex(const int* array, const size_t size, const int a)
+{
+    stringstream buffer;
+    for (size_t i = 0; i < size; i++) 
+    {
+        if ((array[i]) < a)
+        {
+            buffer << i << " ";
         }
     }
+    return buffer.str();
 }
 
-int* Replace(int* myArray, const size_t size, const int  minimum)
+void Replace(int* array, const size_t size) 
 {
-    int temprary = 0;
-    if (myArray == nullptr)
-        cout << "Массив пуст";
-
-    auto maxNegativeArrayValue = minimum;
-    size_t maxNegativeElementIndex = 0;
-
-    for (size_t index = 0; index < size; index++) {
-        if (myArray[index] <0 && myArray[index] > maxNegativeArrayValue) {
-            maxNegativeArrayValue = myArray[index];
-            maxNegativeElementIndex = index;
+    int value = 0;
+    for (size_t i = 0; i < size; i++) 
+    {
+        if (array[i] < value) {
+            value = array[i];
+            array[2] = value;
         }
     }
-
-    if (maxNegativeArrayValue > 0) {
-        cout << "Ошибка";
-    }
-    else {
-        temprary = myArray[maxNegativeElementIndex];
-        myArray[maxNegativeElementIndex] = myArray[(size - 1) / 2];
-        myArray[(size - 1) / 2] = temprary;
-    }
-
-    return myArray;
-}
-
-void ArrayPrint(const int* myArray, const size_t size)
-{
-    if (myArray == nullptr)
-    {
-        cout << "Массива не существует";
-    }
-    else {
-        cout << "\nМассив:\n";
-        for (size_t index = 0; index < size; index++) {
-            cout << myArray[index] << " ";
-        }
-        cout << "\n";
-
-    }
-}
-
-int* FillRandomArray(const size_t size, const int  minimum, const int maximum)
-{
-    random_device rd;
-
-    mt19937 gen(rd());
-
-    const std::uniform_int_distribution<> uniformIntDistribution(minimum, maximum);
-
-    auto* myArray = new int[size];
-
-    for (size_t index = 0; index < size; index++)
-    {
-        myArray[index] = uniformIntDistribution(gen);
-    }
-    return myArray;
-}
-
-int* FillUserArray(const size_t size)
-{
-    auto* array = new int[size];
-    cout << "Введите элементы массива" << "\n";
-    for (size_t index = 0; index < size; index++)
-    {
-        cin >> array[index];
-    }
-    return array;
 }
