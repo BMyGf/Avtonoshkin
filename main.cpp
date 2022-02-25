@@ -28,7 +28,7 @@ enum class Choice
  * \param maximum Максимальное значение в интервале (10)
  * \return Массив
  */
-int* GetArray(const size_t size, const int selection, const int minnimum, const int maximum);
+int* GetArray(const size_t size, const int selection, const int minimum, const int maximum);
 
 /**
  * \brief Получение массива
@@ -122,7 +122,7 @@ size_t GetSize(const string& message)
     return size;
 }
 
-int* GetArray(const size_t size, const int selection, const int min_value, const int max_value)
+int* GetArray(const size_t size, const int selection, const int minimum, const int maximum)
 {
     const auto array = new int[size];
     //Будет использоваться для получения начального значения для механизма случайных чисел
@@ -130,7 +130,7 @@ int* GetArray(const size_t size, const int selection, const int min_value, const
 
     //Standard mersenne_twister_engine seeded with rd()
     mt19937 gen(rd());
-    const uniform_int_distribution<> uniformIntDistribution(min_value, max_value);
+    const uniform_int_distribution<> uniformIntDistribution(minimum, maximum);
     for (size_t index = 0; index < size; index++)
     {
         switch (selection)
